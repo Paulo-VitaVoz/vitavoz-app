@@ -6,21 +6,21 @@ import os
 from datetime import datetime, timedelta
 
 # ==============================================================================
-# CONFIGURAÇÃO DA PLATAFORMA (v43 - Pilot Ready & Founder Program)
+# CONFIGURAÇÃO DA PLATAFORMA (v44 - Storytelling & Narrative Pitch)
 # ==============================================================================
 st.set_page_config(
-    page_title="VitaVoz | Monitoramento Clínico", 
+    page_title="VitaVoz | Monitoramento Preditivo", 
     layout="centered", 
     page_icon="🦷",
     initial_sidebar_state="collapsed"
 )
 
-DB_NAME = "vitavoz_v43_pilot.db"
+DB_NAME = "vitavoz_v44_story.db"
 HOJE = datetime(2026, 7, 28)
 
 os.makedirs("uploads", exist_ok=True)
 
-# CSS Customizado Mobile-First
+# CSS Customizado Mobile-First + Visual de Storytelling
 st.markdown("""
 <style>
     .stApp {
@@ -43,6 +43,15 @@ st.markdown("""
         display: inline-block;
         margin-right: 4px;
         margin-bottom: 4px;
+    }
+    .card-narrativa {
+        background: linear-gradient(135deg, #0F172A 0%, #1E293B 100%);
+        color: #F8FAFC;
+        border-radius: 12px;
+        padding: 16px;
+        margin-bottom: 18px;
+        border-left: 4px solid #10B981;
+        box-shadow: 0 4px 12px rgba(15, 23, 42, 0.15);
     }
     .card-tempo {
         background-color: #F8FAFC;
@@ -81,16 +90,16 @@ def seed_db_if_empty(conn):
     if c.fetchone()[0] == 0:
         pacientes_insert = []
         
-        # 1. João Silva - Caso Clínico
+        # 1. João Silva - O Protagonista da História
         alertas_joao = "Alergia a Amoxicilina | Ansiedade elevada"
-        notas_joao = "Paciente indicado pelo Dr. Carlos. Apresentou histórico de complicação em cirurgia anterior de 2024."
+        notas_joao = "Paciente indicado pelo Dr. Carlos. Apresentou histórico de complicação em cirurgia anterior em 2024."
         pacientes_insert.append(("João Silva", 52, "Implante Dentário", "20/07/2026", "05/08/2026", "Implante Padrão v1.4", alertas_joao, notas_joao, "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
         
-        # 2 e 3. Atenção leve
+        # 2 e 3. Pacientes secundários
         pacientes_insert.append(("Maria Souza", 45, "Enxerto Ósseo", "25/07/2026", "10/08/2026", "Enxerto v1.1", "Sem comorbidades", "Paciente cooperativa", "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"))
         pacientes_insert.append(("Carlos Mendes", 38, "Enxerto Ósseo", "25/07/2026", "10/08/2026", "Enxerto v1.1", "Hipertensão leve", "Uso regular de medicação contínua", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
         
-        # 39 Pacientes com Evolução Normal
+        # 39 Pacientes com Evolução Normal em Segundo Plano
         for i in range(17): pacientes_insert.append((f"Paciente Implante {i+1}", 40 + (i % 15), "Implante Dentário", "14/07/2026", "29/07/2026", "Implante v1.4", "Nenhum", "Evolução habitual", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
         for i in range(10): pacientes_insert.append((f"Paciente Enxerto {i+1}", 35 + (i % 20), "Enxerto Ósseo", "18/07/2026", "02/08/2026", "Enxerto v1.1", "Nenhum", "Evolução habitual", "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"))
         for i in range(5): pacientes_insert.append((f"Paciente Orto {i+1}", 28 + (i % 10), "Ortognática", "23/07/2026", "07/08/2026", "Orto v3.0", "Nenhum", "Evolução habitual", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
@@ -159,7 +168,7 @@ def mudar_pagina(nome):
 
 def render_mobile_header():
     st.markdown("<h3 style='text-align: center; color: #0F172A; margin-bottom: 0;'>VitaVoz</h3>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #64748B; font-size: 12px; margin-top: 0;'>Acompanhamento Clínico Pós-Cirúrgico</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #64748B; font-size: 12px; margin-top: 0;'>Acompanhamento Preditivo de Pós-Operatório</p>", unsafe_allow_html=True)
 
 # ==============================================================================
 # TELA INICIAL: SELEÇÃO DE JORNADA
@@ -167,53 +176,52 @@ def render_mobile_header():
 if st.session_state['pagina_atual'] == 'Home_Selecao':
     st.markdown("<br>", unsafe_allow_html=True)
     st.markdown("<h1 style='text-align: center; color: #0F172A; font-size: 42px; margin-bottom: 0;'>🦷 VitaVoz</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #64748B; font-size: 15px; margin-top: 5px; margin-bottom: 30px;'>Selecione o modo de visualização:</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #64748B; font-size: 14px; margin-top: 5px; margin-bottom: 25px;'>Selecione o ponto de vista da história:</p>", unsafe_allow_html=True)
     
     col1, col2 = st.columns(2)
     with col1:
         with st.container(border=True):
             st.markdown("<div style='text-align: center; font-size: 32px;'>👤</div>", unsafe_allow_html=True)
-            st.markdown("<h5 style='text-align: center; color: #0F172A; margin-bottom: 2px;'>Paciente</h5>", unsafe_allow_html=True)
-            st.markdown("<p style='text-align: center; color: #64748B; font-size: 12px; margin-top: 0;'>Envio de relato</p>", unsafe_allow_html=True)
-            if st.button("Acessar", key="btn_p", type="primary", use_container_width=True):
+            st.markdown("<h5 style='text-align: center; color: #0F172A; margin-bottom: 2px;'>1. Paciente</h5>", unsafe_allow_html=True)
+            st.markdown("<p style='text-align: center; color: #64748B; font-size: 11px; margin-top: 0;'>João Silva envia o relato de casa (D+3)</p>", unsafe_allow_html=True)
+            if st.button("Ver como João", key="btn_p", type="primary", use_container_width=True):
                 mudar_pagina('Paciente_Home')
     with col2:
         with st.container(border=True):
             st.markdown("<div style='text-align: center; font-size: 32px;'>👨‍⚕️</div>", unsafe_allow_html=True)
-            st.markdown("<h5 style='text-align: center; color: #0F172A; margin-bottom: 2px;'>Clínica</h5>", unsafe_allow_html=True)
-            st.markdown("<p style='text-align: center; color: #64748B; font-size: 12px; margin-top: 0;'>Área do Médico</p>", unsafe_allow_html=True)
-            if st.button("Acessar", key="btn_c", type="secondary", use_container_width=True):
+            st.markdown("<h5 style='text-align: center; color: #0F172A; margin-bottom: 2px;'>2. Cirurgião</h5>", unsafe_allow_html=True)
+            st.markdown("<p style='text-align: center; color: #64748B; font-size: 11px; margin-top: 0;'>Dr. Davi chega à clínica às 8h</p>", unsafe_allow_html=True)
+            if st.button("Ver como Dr. Davi", key="btn_c", type="secondary", use_container_width=True):
                 mudar_pagina('Clinica_Login')
 
 # ==============================================================================
-# JORNADA 1: PACIENTE (JOÃO SILVA - D3)
+# JORNADA 1: PACIENTE (JOÃO SILVA EM CASA - D3)
 # ==============================================================================
 elif st.session_state['pagina_atual'] == 'Paciente_Home':
     render_mobile_header()
     
     st.markdown("""
-    <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #CBD5E1; text-align: center;">
-        <h3 style="margin: 0; color: #0F172A; font-size: 20px;">Olá, João 👋</h3>
-        <p style="margin-top: 8px; color: #475569; font-size: 13px; line-height: 1.5;">
+    <div style="background: #F8FAFC; padding: 18px; border-radius: 12px; margin-bottom: 12px; border: 1px solid #CBD5E1; text-align: center;">
+        <h3 style="margin: 0; color: #0F172A; font-size: 18px;">João Silva 👋</h3>
+        <p style="margin-top: 6px; color: #475569; font-size: 12px; line-height: 1.4;">
         Implante realizado em <b>20/07/2026</b><br>
-        <b style="color: #2563EB;">Pós-operatório: 3º dia</b><br>
-        Seu dentista acompanha sua evolução diária.
+        <b style="color: #2563EB;">Pós-operatório: 3º dia (Em casa)</b>
         </p>
     </div>
     """, unsafe_allow_html=True)
     
-    with st.expander("📄 Orientações da sua Cirurgia (Dr. Davi)"):
+    with st.expander("📄 Orientações do Pós-Operatório (Dr. Davi)"):
         st.markdown("""
-        <div style='font-size: 13px; color: #334155; line-height: 1.6;'>
-        <b>1. Medicação:</b> Tomar os analgésicos nos horários prescritos.<br>
-        <b>2. Gelo:</b> Fazer compressa gelada (15 min sim, 15 min não).<br>
-        <b>3. Alimentação:</b> Apenas alimentos líquidos/frios nas primeiras 48h.<br>
-        <b>4. Repouso:</b> Evitar esforços físicos e não bochechar com força.
+        <div style='font-size: 12px; color: #334155; line-height: 1.5;'>
+        • Tomar analgésicos nos horários prescritos.<br>
+        • Compressa gelada (15 min sim, 15 min não).<br>
+        • Alimentação apenas líquida/fria nas 48h.<br>
+        • Evitar esforços físicos e não bochechar.
         </div>
         """, unsafe_allow_html=True)
         
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<b style='color: #0F172A; font-size: 14px;'>Como está sua dor hoje?</b>", unsafe_allow_html=True)
+    st.markdown("<b style='color: #0F172A; font-size: 13px;'>Nível de dor percebido hoje:</b>", unsafe_allow_html=True)
     
     st.select_slider(
         "Selecione o nível de dor:",
@@ -223,22 +231,22 @@ elif st.session_state['pagina_atual'] == 'Paciente_Home':
     )
 
     st.markdown("<br>", unsafe_allow_html=True)
-    st.markdown("<b style='color: #0F172A; font-size: 14px;'>Conte o que você está sentindo:</b>", unsafe_allow_html=True)
-    st.caption("Pode falar normalmente por áudio sobre inchaço, medicação ou dúvidas.")
+    st.markdown("<b style='color: #0F172A; font-size: 13px;'>Gravando relato de voz para o Dr. Davi:</b>", unsafe_allow_html=True)
+    st.caption("Pode falar normalmente por áudio como se estivesse no WhatsApp.")
     
     if st.button("🎤 Enviar relato por voz", type="primary", use_container_width=True):
         st.session_state['processando_audio'] = True
 
     if st.session_state.get('processando_audio'):
-        with st.status("🧠 VitaVoz AI analisando...", expanded=True) as status:
+        with st.status("🧠 VitaVoz AI analisando o relato...", expanded=True) as status:
             time.sleep(1.0)
-            st.write("✓ Transcrição do áudio concluída")
+            st.write("✓ Transcrição: 'Estava melhorando, mas ontem começou uma dor mais forte...'")
             time.sleep(0.8)
-            st.write("✓ Escala visual e sintomas mapeados")
+            st.write("✓ Dor 4/10 + Edema mapeados no 3º dia")
             time.sleep(0.8)
-            st.write("✓ Comparando com protocolo Implante v1.4")
+            st.write("✓ Comparando com o Protocolo Implante v1.4")
             time.sleep(0.8)
-            st.write("✓ Detectada quebra na curva de melhora esperada")
+            st.write("✓ Quebra de tendência de melhora identificada!")
             time.sleep(0.8)
             status.update(label="Análise concluída", state="complete", expanded=False)
             
@@ -258,18 +266,18 @@ elif st.session_state['pagina_atual'] == 'Paciente_Status':
     render_mobile_header()
     st.markdown("<br>", unsafe_allow_html=True)
     
-    st.markdown("<h4 style='text-align: center; color: #0F172A;'>Atualização recebida com sucesso.</h4>", unsafe_allow_html=True)
+    st.markdown("<h4 style='text-align: center; color: #0F172A;'>Relato enviado ao Dr. Davi com sucesso.</h4>", unsafe_allow_html=True)
     
     with st.container(border=True):
-        st.markdown("#### Status da recuperação:")
+        st.markdown("#### Sua linha do tempo:")
         
         st.markdown("""
         <div style="margin-bottom: 20px; margin-top: 10px;">
             <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
-                <span style="font-size: 13px; font-weight: bold; color: #0F172A;">Progresso estimado</span>
-                <span style="font-size: 13px; font-weight: bold; color: #D97706;">70%</span>
+                <span style="font-size: 12px; font-weight: bold; color: #0F172A;">Progresso estimado</span>
+                <span style="font-size: 12px; font-weight: bold; color: #D97706;">70%</span>
             </div>
-            <div style="background-color: #E2E8F0; border-radius: 10px; width: 100%; height: 12px;">
+            <div style="background-color: #E2E8F0; border-radius: 10px; width: 100%; height: 10px;">
                 <div style="background-color: #F59E0B; width: 70%; height: 100%; border-radius: 10px;"></div>
             </div>
             <div style="font-size: 11px; color: #64748B; margin-top: 6px;">Esperado para D+3: <b>85%</b></div>
@@ -277,48 +285,57 @@ elif st.session_state['pagina_atual'] == 'Paciente_Status':
         """, unsafe_allow_html=True)
 
         st.markdown("<span style='color:#64748B; font-size:12px; font-weight: bold;'>🟢 D1 E D2</span>", unsafe_allow_html=True)
-        st.markdown("Evolução positiva")
+        st.markdown("Evolução positiva e dentro do esperado.")
         st.divider()
         st.markdown("<span style='color:#D97706; font-size:12px; font-weight:bold;'>🟡 HOJE (D+3)</span>", unsafe_allow_html=True)
-        st.markdown("**Atenção recomendada** (Aumento pontual de dor/edema)")
+        st.markdown("**Acompanhamento em revisão pelo dentista**")
         
-    st.info("👨‍⚕️ **Seu dentista foi notificado para revisar seu caso.**\n\nVocê continua sob acompanhamento seguro.")
+    st.info("👨‍⚕️ **O Dr. Davi já foi notificado no painel da clínica para avaliar seu relato.**")
     
     st.markdown("<br>", unsafe_allow_html=True)
-    if st.button("Ver na Área do Médico", type="primary", use_container_width=True):
+    if st.button("Ir para o Painel do Médico (8h da manhã)", type="primary", use_container_width=True):
         mudar_pagina('Clinica_Login')
 
 # ==============================================================================
-# JORNADA 2: CLÍNICA / MÉDICO
+# JORNADA 2: O CIRURGIÃO (A NARRATIVA DAS 08:00H DA MANHÃ)
 # ==============================================================================
 elif st.session_state['pagina_atual'] == 'Clinica_Login':
     render_mobile_header()
     st.markdown("<br>", unsafe_allow_html=True)
     
     with st.container(border=True):
-        st.markdown("<h4 style='text-align: center; color: #0F172A; margin-bottom: 5px;'>Painel Clínico</h4>", unsafe_allow_html=True)
+        st.markdown("<h4 style='text-align: center; color: #0F172A; margin-bottom: 5px;'>Painel do Cirurgião</h4>", unsafe_allow_html=True)
         st.markdown("<div style='text-align: center; font-size: 40px;'>👨‍⚕️</div>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-weight: bold; color: #475569; font-size: 16px;'>Dr. Davi<br><span style='font-weight: normal; font-size: 13px;'>Clínica Prime</span></p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-weight: bold; color: #475569; font-size: 15px;'>Dr. Davi<br><span style='font-weight: normal; font-size: 12px;'>Clínica Prime • 08:00h da manhã</span></p>", unsafe_allow_html=True)
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("Entrar no Sistema", type="primary", use_container_width=True):
+        if st.button("Abrir o VitaVoz", type="primary", use_container_width=True):
             mudar_pagina('Clinica_Greeting')
 
-# TELA HERO DO PITCH (GREETING MATADOR)
+# TELA 5: A NARRATIVA PRINCIPAL (EXACT SCENARIO HOOK)
 elif st.session_state['pagina_atual'] == 'Clinica_Greeting':
     render_mobile_header()
-    st.markdown("<br>", unsafe_allow_html=True)
+    
+    # CARD DE NARRATIVA AMBIENTADA
+    st.markdown("""
+    <div class='card-narrativa'>
+        <div style='font-size: 11px; font-weight: bold; color: #10B981; text-transform: uppercase; tracking: 1px; margin-bottom: 4px;'>⏰ 08:00h da Manhã na Clínica</div>
+        <div style='font-size: 13px; line-height: 1.5; color: #E2E8F0;'>
+        O Dr. Davi chega para trabalhar. Em vez de abrir dezenas de conversas no WhatsApp para revisar <b>42 pacientes</b>, ele abre o <b>VitaVoz</b>.<br><br>
+        Em menos de 1 minuto, ele sabe que <b>apenas 1 paciente</b> exige sua atenção agora.
+        </div>
+    </div>
+    """, unsafe_allow_html=True)
     
     with st.container(border=True):
-        st.markdown("<h3 style='text-align: center; color: #0F172A; margin-bottom: 5px;'>Bom dia, Dr. Davi 👋</h3>", unsafe_allow_html=True)
-        st.markdown("<p style='text-align: center; font-size: 14px; color: #475569;'>Hoje você possui <b>42 pacientes ativos</b>.<br>A IA já analisou todos.</p>", unsafe_allow_html=True)
+        st.markdown("<h3 style='text-align: center; color: #0F172A; margin-bottom: 5px; font-size: 18px;'>Bom dia, Dr. Davi 👋</h3>", unsafe_allow_html=True)
         
         st.markdown("""
-        <div style='background: #FEF3C7; border: 1px solid #FCD34D; color: #92400E; padding: 15px; border-radius: 10px; text-align: center; margin-top: 15px; margin-bottom: 15px;'>
-            <span style='font-size: 15px; font-weight: bold;'>Você não precisa revisar 42 pacientes hoje.<br>Apenas 1 precisa da sua atenção.</span>
+        <div style='background: #FEF3C7; border: 1px solid #FCD34D; color: #92400E; padding: 14px; border-radius: 10px; text-align: center; margin-top: 10px; margin-bottom: 12px;'>
+            <span style='font-size: 14px; font-weight: bold;'>Você não precisa revisar 42 pacientes hoje.<br>Apenas 1 precisa da sua atenção.</span>
         </div>
         """, unsafe_allow_html=True)
         
-        st.markdown("<p style='text-align: center; font-size: 12px; color: #64748B;'>Nenhuma ação necessária em 41 pacientes.<br>Caso prioritário: <b>João Silva (D+3)</b></p>", unsafe_allow_html=True)
+        st.markdown("<p style='text-align: center; font-size: 12px; color: #64748B;'>41 pacientes seguem no padrão normal.<br>Caso prioritário: <b>João Silva (Implante D+3)</b></p>", unsafe_allow_html=True)
         
         st.markdown("<br>", unsafe_allow_html=True)
         # BOTAO DIRETO PARA O PACIENTE CRÍTICO
@@ -326,12 +343,14 @@ elif st.session_state['pagina_atual'] == 'Clinica_Greeting':
             mudar_pagina('Clinica_Prontuario')
             
         st.markdown("<br>", unsafe_allow_html=True)
-        if st.button("Ver Dashboard Completo", type="secondary", use_container_width=True):
+        if st.button("Ver Visão Geral dos 42 Pacientes", type="secondary", use_container_width=True):
             mudar_pagina('Clinica_Dashboard')
 
 elif st.session_state['pagina_atual'] == 'Clinica_Dashboard':
     render_mobile_header()
-    
+    if st.button("← Voltar ao Início", use_container_width=True): 
+        mudar_pagina('Clinica_Greeting')
+        
     st.markdown("#### Visão Geral da Clínica")
     
     c1, c2 = st.columns(2)
@@ -350,19 +369,17 @@ elif st.session_state['pagina_atual'] == 'Clinica_Dashboard':
         </div>
         """, unsafe_allow_html=True)
 
-    # 1. EXPLICANDO O TEMPO ECONOMIZADO (DESMISTIFICADO)
     st.markdown("""
     <div class='card-tempo'>
         <b style='color: #0F172A; font-size: 13px;'>⏳ Cátedra de Tempo Clínico Hoje:</b><br>
         <div style='font-size: 12px; color: #475569; margin-top: 5px; line-height: 1.6;'>
-        • Sem VitaVoz (atendimento manual): <b>2h40</b><br>
+        • Sem VitaVoz (triagem manual): <b>2h40</b><br>
         • Com VitaVoz (triagem automatizada): <b>18 min</b><br>
-        <b style='color: #10B981; font-size: 13px;'>Economia direta: 2h22 de clínica</b>
+        <b style='color: #10B981; font-size: 13px;'>Economia direta: 2h22 de consultório</b>
         </div>
     </div>
     """, unsafe_allow_html=True)
     
-    # 2. ACOMPANHAMENTO CONTÍNUO (ONTEM VS HOJE)
     st.markdown("""
     <div style="background: #F8FAFC; padding: 12px; border-radius: 8px; border-left: 4px solid #3B82F6; margin-bottom: 15px;">
         <b>Acompanhamento Histórico:</b><br>
@@ -373,14 +390,13 @@ elif st.session_state['pagina_atual'] == 'Clinica_Dashboard':
     </div>
     """, unsafe_allow_html=True)
 
-    # 3. LEGENDA DA ESCALA VITASCORE
-    with st.expander("📊 Como funciona o VitaScore™?"):
+    with st.expander("📊 Legenda da Escala VitaScore™"):
         st.markdown("""
         <div style='font-size: 12px; color: #334155; line-height: 1.6;'>
         🟢 <b>95+ :</b> Excelente evolução<br>
         🟢 <b>80–95 :</b> Dentro do esperado<br>
         🟡 <b>60–79 :</b> Necessita atenção (quebra de curva)<br>
-        🔴 <b>< 60 :</b> Revisão e intervenção recomendada
+        🔴 <b>< 60 :</b> Revisão recomendada
         </div>
         """, unsafe_allow_html=True)
 
@@ -393,7 +409,7 @@ elif st.session_state['pagina_atual'] == 'Clinica_Dashboard':
     with colB:
         if st.button("📚 Protocolos", use_container_width=True):
             mudar_pagina('Clinica_Protocolos')
-        
+
     with st.expander("📋 Ver lista completa dos 42 pacientes"):
         df_fila = pd.DataFrame(get_fila_completa())
         st.dataframe(df_fila, use_container_width=True, hide_index=True)
@@ -451,6 +467,7 @@ elif st.session_state['pagina_atual'] == 'Clinica_Fila':
         if st.button("Abrir Prontuário Clínico", type="primary", use_container_width=True):
             mudar_pagina('Clinica_Prontuario')
 
+# TELA 6: O CLÍMAX DA HISTÓRIA (REAVALIAÇÃO ANTES DO RETORNO)
 elif st.session_state['pagina_atual'] == 'Clinica_Prontuario':
     render_mobile_header()
     if st.button("← Voltar ao Início", use_container_width=True): 
@@ -458,6 +475,14 @@ elif st.session_state['pagina_atual'] == 'Clinica_Prontuario':
     
     joao_id = get_joao_id()
     paciente, evolucoes = get_paciente_data(joao_id)
+    
+    # CARD EXPLICATIVO DA NARRATIVA
+    st.markdown("""
+    <div style='background: #EFF6FF; border: 1px solid #BFDBFE; padding: 12px; border-radius: 10px; margin-bottom: 12px; font-size: 12px; color: #1E40AF;'>
+        💡 <b>O que o Dr. Davi está enxergando agora:</b><br>
+        João ainda está em casa, dias antes do retorno agendado. O VitaVoz detectou a inversão da dor no D+3 e sugeriu a reavaliação. O médico age cedo, o paciente se sente protegido e a clínica ganha tempo.
+    </div>
+    """, unsafe_allow_html=True)
     
     st.markdown(f"### {paciente.get('nome', 'João Silva')}")
     st.markdown(f"<span style='color: #475569; font-size: 13px;'>52 anos | {paciente.get('procedimento')}</span>", unsafe_allow_html=True)
@@ -487,12 +512,11 @@ elif st.session_state['pagina_atual'] == 'Clinica_Prontuario':
         </div>
         """, unsafe_allow_html=True)
         
-        # 4. BLOCO DE RISCO IDENTIFICADO
         st.markdown("""
         <div style='background: #FEF2F2; border: 1px solid #FECACA; padding: 10px; border-radius: 8px; margin-top: 10px;'>
-            <b style='color: #991B1B; font-size: 13px;'>Risco identificado:</b> <span style='font-size: 13px; color: #791F1F;'>Possível infecção inicial / complicação do enxerto</span><br>
-            <b style='color: #991B1B; font-size: 13px;'>Probabilidade:</b> <span style='font-size: 13px; color: #791F1F;'>Baixa / Moderada</span><br>
-            <b style='color: #991B1B; font-size: 13px;'>Conduta recomendada:</b> <span style='font-size: 13px; color: #791F1F;'>Reavaliar paciente</span>
+            <b style='color: #991B1B; font-size: 12px;'>Risco identificado:</b> <span style='font-size: 12px; color: #791F1F;'>Possível complicação inicial do enxerto</span><br>
+            <b style='color: #991B1B; font-size: 12px;'>Probabilidade:</b> <span style='font-size: 12px; color: #791F1F;'>Baixa / Moderada</span><br>
+            <b style='color: #991B1B; font-size: 12px;'>Conduta recomendada:</b> <span style='font-size: 12px; color: #791F1F;'>Reavaliar paciente</span>
         </div>
         """, unsafe_allow_html=True)
 
@@ -503,7 +527,7 @@ elif st.session_state['pagina_atual'] == 'Clinica_Prontuario':
            <p style="margin-bottom: 10px;"><b style="color: #0F172A;">20/07</b> — Cirurgia Realizada</p>
            <p style="margin-bottom: 10px;"><b style="color: #0F172A;">21/07 (D+1)</b> — Dor 6/10 (Dentro do esperado)</p>
            <p style="margin-bottom: 10px;"><b style="color: #10B981;">22/07 (D+2)</b> — Dor 2/10 (Melhorando)</p>
-           <p><b style="color: #D97706;">23/07 (D+3 Hoje)</b> — ⚠️ Dor 4/10 + Edema (Reversão)</p>
+           <p><b style="color: #D97706;">23/07 (D+3 Hoje)</b> — ⚠️ Dor 4/10 + Edema (Inversão)</p>
         </div>
         """, unsafe_allow_html=True)
         
@@ -522,26 +546,25 @@ elif st.session_state['pagina_atual'] == 'Clinica_Prontuario':
                 st.toast("📲 Alerta enviado para o WhatsApp do Dr. Davi!", icon="🚨")
 
 # ==============================================================================
-# FECHAMENTO EMOCIONAL E PROGRAMA FUNDADORES
+# TELA 7: FECHAMENTO DA HISTÓRIA & PROGRAMA FUNDADORES
 # ==============================================================================
 elif st.session_state['pagina_atual'] == 'Clinica_Resultado':
-    st.markdown("<br><br>", unsafe_allow_html=True)
+    st.markdown("<br>", unsafe_allow_html=True)
     
-    # 5. TEXTO FINAL EMOCIONAL
     st.markdown("""
-    <div style='text-align: center; color: #0F172A; font-size: 18px; line-height: 1.6;'>
+    <div style='text-align: center; color: #0F172A; font-size: 17px; line-height: 1.6;'>
         O paciente já estava piorando.<br>
-        <b>Antes do retorno.</b><br>
-        <b>Antes da complicação.</b><br>
-        <b>Antes da ligação.</b><br><br>
-        <span style='color: #10B981; font-weight: 800; font-size: 20px;'>O VitaVoz identificou a mudança no momento em que ela aconteceu.</span>
+        <b>Antes do retorno agendado.</b><br>
+        <b>Antes de virar uma complicação.</b><br>
+        <b>Antes da ligação de emergência.</b><br><br>
+        <span style='color: #10B981; font-weight: 800; font-size: 19px;'>O VitaVoz identificou a mudança no momento em que ela aconteceu.</span>
     </div>
     """, unsafe_allow_html=True)
     
     st.markdown("<br><br>", unsafe_allow_html=True)
     
-    st.markdown("<h1 style='text-align: center; color: #0F172A; font-size: 40px; margin-bottom: 0;'>🦷 VitaVoz</h1>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; font-size: 15px; color: #475569; margin-top: 10px; line-height: 1.5;'>Menos tempo procurando problemas.<br><b style='color: #10B981;'>Mais tempo cuidando de pacientes.</b></p>", unsafe_allow_html=True)
+    st.markdown("<h1 style='text-align: center; color: #0F172A; font-size: 38px; margin-bottom: 0;'>🦷 VitaVoz</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; font-size: 15px; color: #475569; margin-top: 8px; line-height: 1.5;'>Menos tempo procurando problemas.<br><b style='color: #10B981;'>Mais tempo cuidando de pacientes.</b></p>", unsafe_allow_html=True)
 
     st.markdown("<br><br>", unsafe_allow_html=True)
     
@@ -555,18 +578,18 @@ elif st.session_state['pagina_atual'] == 'Clinica_Resultado':
             st.session_state.clear()
             mudar_pagina('Home_Selecao')
 
-# 6. TELA DO PROGRAMA FUNDADORES (PARCERIA COM O DR. DAVI)
+# TELA 8: PROGRAMA FUNDADORES
 elif st.session_state['pagina_atual'] == 'Clinica_Fundadores':
     render_mobile_header()
     if st.button("← Voltar", use_container_width=True): 
         mudar_pagina('Clinica_Resultado')
         
     st.markdown("<h3 style='color: #0F172A; text-align: center; margin-bottom: 5px;'>Programa Fundadores VitaVoz</h3>", unsafe_allow_html=True)
-    st.markdown("<p style='text-align: center; color: #2563EB; font-weight: bold; font-size: 14px;'>Convite para Primeira Clínica Parceira</p>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align: center; color: #2563EB; font-weight: bold; font-size: 13px;'>Convite para Primeira Clínica Parceira</p>", unsafe_allow_html=True)
 
     with st.container(border=True):
         st.markdown("""
-        <div style='font-size: 14px; color: #334155; line-height: 1.8;'>
+        <div style='font-size: 13px; color: #334155; line-height: 1.8;'>
         ✔ <b>60 dias gratuitos de uso completo</b><br>
         ✔ <b>Implantação e parametrização personalizada</b><br>
         ✔ <b>Evolução dos protocolos junto com o time VitaVoz</b>
