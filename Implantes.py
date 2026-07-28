@@ -6,7 +6,7 @@ import os
 from datetime import datetime, timedelta
 
 # ==============================================================================
-# CONFIGURAÇÃO DA PLATAFORMA (v41 - Mobile-First & Real Clinical Context)
+# CONFIGURAÇÃO DA PLATAFORMA (v42 - Master Edition)
 # ==============================================================================
 st.set_page_config(
     page_title="VitaVoz | Monitoramento Clínico", 
@@ -15,15 +15,14 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-DB_NAME = "vitavoz_v41_pitch.db"
+DB_NAME = "vitavoz_v42_master.db"
 HOJE = datetime(2026, 7, 28)
 
 os.makedirs("uploads", exist_ok=True)
 
-# CSS Customizado para Garagem Responsiva em Celulares (Touch Friendly)
+# CSS Customizado Mobile-First
 st.markdown("""
 <style>
-    /* Otimização para Mobile */
     .stApp {
         max-width: 480px;
         margin: 0 auto;
@@ -33,9 +32,6 @@ st.markdown("""
         height: 3em;
         font-weight: 600;
     }
-    div[data-testid="stMetricValue"] {
-        font-size: 22px !important;
-    }
     .badge-alerta {
         background-color: #FEF2F2;
         border: 1px solid #FCA5A5;
@@ -44,6 +40,18 @@ st.markdown("""
         border-radius: 6px;
         font-size: 12px;
         font-weight: bold;
+        display: inline-block;
+        margin-right: 4px;
+        margin-bottom: 4px;
+    }
+    .badge-nota {
+        background-color: #F0F9FF;
+        border: 1px solid #BAE6FD;
+        color: #0369A1;
+        padding: 4px 8px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 500;
         display: inline-block;
         margin-right: 4px;
         margin-bottom: 4px;
@@ -65,7 +73,7 @@ def init_db():
     c = conn.cursor()
     c.execute('''CREATE TABLE IF NOT EXISTS pacientes (
                  id INTEGER PRIMARY KEY AUTOINCREMENT, nome TEXT, idade INTEGER, procedimento TEXT, 
-                 data_cirurgia TEXT, data_retorno TEXT, protocolo TEXT, alertas_clinicos TEXT, avatar TEXT)''')
+                 data_cirurgia TEXT, data_retorno TEXT, protocolo TEXT, alertas_clinicos TEXT, notas_medico TEXT, avatar TEXT)''')
     c.execute('''CREATE TABLE IF NOT EXISTS evolucoes (
                  id INTEGER PRIMARY KEY AUTOINCREMENT, paciente_id INTEGER, dia INTEGER, dor INTEGER, 
                  inchaco TEXT, febre TEXT, tendencia TEXT, relato TEXT, score INTEGER, status_alerta TEXT, data_registro TEXT)''')
@@ -79,32 +87,31 @@ def seed_db_if_empty(conn):
         pacientes_insert = []
         
         # 1. João Silva - Caso Clínico Específico
-        alertas_joao = "Alergia a Amoxicilina | Ansiedade elevada | Histórico de complicação anterior"
-        pacientes_insert.append(("João Silva", 52, "Implante Dentário", "20/07/2026", "05/08/2026", "Implante Padrão v1.4", alertas_joao, "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
+        alertas_joao = "Alergia a Amoxicilina | Ansiedade elevada"
+        notas_joao = "Paciente indicado pelo Dr. Carlos. Apresentou histórico de complicação em cirurgia anterior de 2024. Requer atenção especial à ansiedade."
+        pacientes_insert.append(("João Silva", 52, "Implante Dentário", "20/07/2026", "05/08/2026", "Implante Padrão v1.4", alertas_joao, notas_joao, "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
         
         # 2 e 3. Atenção
-        pacientes_insert.append(("Maria Souza", 45, "Enxerto Ósseo", "25/07/2026", "10/08/2026", "Enxerto v1.1", "Sem comorbidades", "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"))
-        pacientes_insert.append(("Carlos Mendes", 38, "Enxerto Ósseo", "25/07/2026", "10/08/2026", "Enxerto v1.1", "Hipertensão leve", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
+        pacientes_insert.append(("Maria Souza", 45, "Enxerto Ósseo", "25/07/2026", "10/08/2026", "Enxerto v1.1", "Sem comorbidades", "Paciente cooperativa", "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"))
+        pacientes_insert.append(("Carlos Mendes", 38, "Enxerto Ósseo", "25/07/2026", "10/08/2026", "Enxerto v1.1", "Hipertensão leve", "Uso regular de medicação contínua", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
         
-        # Pacientes em Acompanhamento Normal (Garantindo escala de 42 casos)
-        for i in range(17): pacientes_insert.append((f"Paciente Implante {i+1}", 40 + (i % 15), "Implante Dentário", "14/07/2026", "29/07/2026", "Implante v1.4", "Nenhum", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
-        for i in range(10): pacientes_insert.append((f"Paciente Enxerto {i+1}", 35 + (i % 20), "Enxerto Ósseo", "18/07/2026", "02/08/2026", "Enxerto v1.1", "Nenhum", "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"))
-        for i in range(5): pacientes_insert.append((f"Paciente Orto {i+1}", 28 + (i % 10), "Ortognática", "23/07/2026", "07/08/2026", "Orto v3.0", "Nenhum", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
-        for i in range(7): pacientes_insert.append((f"Paciente Carga {i+1}", 55 + (i % 12), "Carga Imediata", "26/07/2026", "10/08/2026", "Carga v2.1", "Nenhum", "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"))
+        # 39 Pacientes em Acompanhamento Normal
+        for i in range(17): pacientes_insert.append((f"Paciente Implante {i+1}", 40 + (i % 15), "Implante Dentário", "14/07/2026", "29/07/2026", "Implante v1.4", "Nenhum", "Evolução habitual", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
+        for i in range(10): pacientes_insert.append((f"Paciente Enxerto {i+1}", 35 + (i % 20), "Enxerto Ósseo", "18/07/2026", "02/08/2026", "Enxerto v1.1", "Nenhum", "Evolução habitual", "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"))
+        for i in range(5): pacientes_insert.append((f"Paciente Orto {i+1}", 28 + (i % 10), "Ortognática", "23/07/2026", "07/08/2026", "Orto v3.0", "Nenhum", "Evolução habitual", "https://cdn-icons-png.flaticon.com/512/3135/3135715.png"))
+        for i in range(7): pacientes_insert.append((f"Paciente Carga {i+1}", 55 + (i % 12), "Carga Imediata", "26/07/2026", "10/08/2026", "Carga v2.1", "Nenhum", "Evolução habitual", "https://cdn-icons-png.flaticon.com/512/3135/3135789.png"))
 
-        c.executemany('''INSERT INTO pacientes (nome, idade, procedimento, data_cirurgia, data_retorno, protocolo, alertas_clinicos, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?)''', pacientes_insert)
+        c.executemany('''INSERT INTO pacientes (nome, idade, procedimento, data_cirurgia, data_retorno, protocolo, alertas_clinicos, notas_medico, avatar) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)''', pacientes_insert)
         
         c.execute("SELECT id FROM pacientes WHERE nome='João Silva' LIMIT 1")
         joao_id = c.fetchone()[0]
         c.execute("SELECT id FROM pacientes WHERE nome!='João Silva'")
         outros_ids = [row[0] for row in c.fetchall()]
         
-        # Histórico do João Silva até o D+3
         evolucoes_insert = []
         evolucoes_insert.append((joao_id, 1, 6, 'Pouco', 'Não', 'Igual', "Dói um pouco, mas suportável.", 90, '🟢 Normal', "21/07/2026"))
         evolucoes_insert.append((joao_id, 2, 2, 'Não', 'Não', 'Melhorando', "Hoje está bem melhor doutor, quase sem dor.", 95, '🟢 Normal', "22/07/2026"))
         
-        # Outros pacientes
         for i, p_id in enumerate(outros_ids):
             if i in [0, 1]: 
                 evolucoes_insert.append((p_id, 3, 6, 'Médio', 'Não', 'Igual', "A dor continua constante.", 75, '🟡 Atenção', HOJE.strftime("%d/%m/%Y")))
@@ -119,7 +126,7 @@ if not os.path.exists(DB_NAME):
     seed_db_if_empty(conn)
     conn.close()
 
-# --- Helper Functions ---
+# --- Helpers ---
 def get_joao_id():
     conn = sqlite3.connect(DB_NAME)
     c = conn.cursor()
@@ -193,16 +200,41 @@ elif st.session_state['pagina_atual'] == 'Paciente_Home':
     render_mobile_header()
     
     st.markdown("""
-    <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; margin-bottom: 20px; border: 1px solid #CBD5E1; text-align: center;">
+    <div style="background: #F8FAFC; padding: 20px; border-radius: 12px; margin-bottom: 15px; border: 1px solid #CBD5E1; text-align: center;">
         <h3 style="margin: 0; color: #0F172A; font-size: 20px;">Olá, João 👋</h3>
-        <p style="margin-top: 10px; color: #475569; font-size: 14px; line-height: 1.5;">
+        <p style="margin-top: 8px; color: #475569; font-size: 13px; line-height: 1.5;">
         Implante realizado em <b>20/07/2026</b><br>
-        <b style="color: #2563EB;">Pós-operatório: 3º dia</b><br><br>
-        Seu dentista acompanha sua evolução diária.<br><br>
-        <b>Conte como você está hoje.<br>Pode falar normalmente.</b>
+        <b style="color: #2563EB;">Pós-operatório: 3º dia</b><br>
+        Seu dentista acompanha sua evolução diária.
         </p>
     </div>
     """, unsafe_allow_html=True)
+    
+    # 1. ABA DE ORIENTAÇÕES DO PÓS-OPERATÓRIO (A COLINHA DO PACIENTE)
+    with st.expander("📄 Orientações da sua Cirurgia (Dr. Davi)"):
+        st.markdown("""
+        <div style='font-size: 13px; color: #334155; line-height: 1.6;'>
+        <b>1. Medicação:</b> Tomar os analgésicos nos horários prescritos na receita.<br>
+        <b>2. Gelo:</b> Fazer compressa gelada na bochecha (15 min sim, 15 min não).<br>
+        <b>3. Alimentação:</b> Apenas alimentos líquidos e frios/mornos nas primeiras 48h.<br>
+        <b>4. Repouso:</b> Evitar esforços físicos e não cuspir nem usar canudo.
+        </div>
+        """, unsafe_allow_html=True)
+        
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<b style='color: #0F172A; font-size: 14px;'>Como está sua dor hoje?</b>", unsafe_allow_html=True)
+    
+    # 2. ESCALA VISUAL DE DOR COM EMOJIS (PADRÃO OMS)
+    dor_selecionada = st.select_slider(
+        "Selecione o nível de dor:",
+        options=["😃 Nenhuma (0-1)", "🙂 Leve (2-3)", "😐 Moderada (4-5)", "😣 Forte (6-7)", "😫 Intensa (8-10)"],
+        value="😐 Moderada (4-5)",
+        label_visibility="collapsed"
+    )
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    st.markdown("<b style='color: #0F172A; font-size: 14px;'>Conte o que você está sentindo:</b>", unsafe_allow_html=True)
+    st.caption("Pode falar normalmente por áudio sobre inchaço, medicação ou dúvidas.")
     
     if st.button("🎤 Enviar relato por voz", type="primary", use_container_width=True):
         st.session_state['processando_audio'] = True
@@ -212,9 +244,9 @@ elif st.session_state['pagina_atual'] == 'Paciente_Home':
             time.sleep(1.0)
             st.write("✓ Transcrição do áudio concluída")
             time.sleep(0.8)
-            st.write("✓ Sintomas identificados: Dor 4/10 + Edema")
+            st.write("✓ Escala visual e sintomas mapeados")
             time.sleep(0.8)
-            st.write("✓ Comparando com o protocolo Implante v1.4")
+            st.write("✓ Comparando com protocolo Implante v1.4")
             time.sleep(0.8)
             st.write("✓ Detectada quebra na curva de melhora esperada")
             time.sleep(0.8)
@@ -422,16 +454,18 @@ elif st.session_state['pagina_atual'] == 'Clinica_Prontuario':
     st.markdown(f"<span style='color: #475569; font-size: 13px;'>52 anos | {paciente.get('procedimento')}</span>", unsafe_allow_html=True)
     st.markdown(f"<span style='color: #2563EB; font-size: 13px; font-weight: bold;'>Implante realizado em 20/07/2026 • Pós-operatório: 3º dia</span>", unsafe_allow_html=True)
     
-    # BOX DE ALERTAS CLÍNICOS E ANAMNESE (O DIFERENCIAL MÉDICO)
+    # 3. ALERTAS E CAMPO DE ANAMNESE / NOTAS PRIVADAS DO MÉDICO
     with st.container(border=True):
         st.markdown("<b style='color: #0F172A; font-size: 13px;'>Alertas da Anamnese:</b>", unsafe_allow_html=True)
         st.markdown("""
-        <div style='margin-top: 5px;'>
+        <div style='margin-top: 5px; margin-bottom: 10px;'>
             <span class='badge-alerta'>⚠️ Alergia a Amoxicilina</span>
             <span class='badge-alerta'>🧠 Ansiedade elevada</span>
-            <span class='badge-alerta'>📋 Histórico de complicação</span>
         </div>
         """, unsafe_allow_html=True)
+        
+        st.markdown("<b style='color: #0F172A; font-size: 13px;'>📌 Anotações Privadas do Cirurgião:</b>", unsafe_allow_html=True)
+        st.markdown(f"<div style='font-size: 12px; color: #334155; margin-top: 4px;'><i>\"{paciente.get('notas_medico', 'Sem observações')}\"</i></div>", unsafe_allow_html=True)
 
     with st.container(border=True):
         st.markdown("#### 🧠 Análise VitaVoz AI")
@@ -462,8 +496,14 @@ elif st.session_state['pagina_atual'] == 'Clinica_Prontuario':
         st.markdown("Mensagem sugerida para o paciente:")
         st.success("**Olá João, o Dr. Davi analisou sua atualização de hoje (D+3). Como você relatou um pequeno aumento de inchaço e dor após ter melhorado, vamos acompanhar de perto. Sua equipe entrará em contato para orientar a conduta.**")
         
-        if st.button("💬 Enviar Orientação ao Paciente", type="primary", use_container_width=True):
-            mudar_pagina('Clinica_Resultado')
+        col1, col2 = st.columns([1, 1])
+        with col1:
+            if st.button("💬 Enviar Orientação", type="primary", use_container_width=True):
+                mudar_pagina('Clinica_Resultado')
+        with col2:
+            # 4. SIMULADOR DE DISPARO WHATSAPP DE URGÊNCIA
+            if st.button("📲 Simular Notificação WhatsApp", type="secondary", use_container_width=True):
+                st.toast("📲 Alerta enviado para o WhatsApp pessoal do Dr. Davi!", icon="🚨")
 
 # ==============================================================================
 # FECHAMENTO DO PITCH
