@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="h-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>VitaVoz Dental — One-Pager Institucional</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+                    },
+                    colors: {
+                        teal: {
+                            50: '#f0fdfa',
+                            100: '#ccfbf1',
+                            500: '#14b8a6',
+                            600: '#0d9488',
+                            700: '#0f766e',
+                            800: '#115e59',
+                            900: '#134e4a',
+                        },
+                        brand: {
+                            dark: '#0f172a',
+                            surface: '#1e293b',
+                            accent: '#0d9488',
+                            highlight: '#38bdf8',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @media print {
+            body {
+                background: white !important;
+                color: black !important;
+                font-size: 11px !important;
+            }
+            .no-print {
+                display: none !important;
+            }
+            .page-container {
+                box-shadow: none !important;
+                border: none !important;
+                max-width: 100% !important;
+                padding: 0 !important;
+                margin: 0 !important;
+            }
+            .print-border {
+                border: 1px solid #e2e8f0 !important;
+            }
+            .print-bg-light {
+                background-color: #f8fafc !important;
+            }
+        }
+    </style>
+</head>
+<body class="bg-slate-900 text-slate-100 font-sans antialiased min-h-full py-6 px-3 sm:px-6">
+
+    <!-- MAIN ONE-PAGER CONTAINER -->
+    <main class="max-w-5xl mx-auto bg-slate-950 border border-slate-800 rounded-2xl shadow-2xl overflow-hidden page-container">
+        
+        <!-- HEADER INSTITUCIONAL -->
+        <header class="border-b border-slate-800 bg-gradient-to-r from-slate-900 via-slate-900 to-teal-950/40 p-6 sm:p-8">
+            <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                <div>
+                    <div class="flex items-center gap-2.5 mb-1">
+                        <div class="bg-teal-500/20 text-teal-400 p-2 rounded-xl border border-teal-500/30">
+                            <i data-lucide="activity" class="w-6 h-6"></i>
+                        </div>
+                        <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                            VitaVoz <span class="text-teal-400 font-normal">| Dental</span>
+                        </h1>
+                    </div>
+                    <p class="text-sm sm:text-base text-slate-300 font-medium">
+                        Pós-Operatório Inteligente & Prevenção de Risco Cirúrgico
+                    </p>
+                </div>
+                <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-teal-500/10 border border-teal-500/30 text-teal-300 text-xs font-semibold tracking-wide uppercase">
+                    <span class="w-2 h-2 rounded-full bg-teal-400 animate-pulse"></span>
+                    PROGRAMA FUNDADORES 2026
+                </div>
+            </div>
+        </header>
+
+        <div class="p-6 sm:p-8 space-y-8">
+
+            <!-- PROPOSIÇÃO DE VALOR -->
+            <section class="relative bg-gradient-to-br from-teal-950/60 via-slate-900 to-slate-900 border border-teal-500/30 rounded-2xl p-6 sm:p-7 shadow-inner">
+                <div class="absolute -top-3 left-6 bg-teal-600 text-white text-[10px] uppercase tracking-wider font-bold px-3 py-0.5 rounded-full shadow">
+                    PROPOSIÇÃO DE VALOR
+                </div>
+                <blockquote class="text-xl sm:text-2xl font-bold text-white tracking-tight mb-3 italic">
+                    "Você não precisa revisar 42 pacientes hoje. Apenas 1 precisa da sua atenção."
+                </blockquote>
+                <p class="text-sm sm:text-base text-slate-300 leading-relaxed">
+                    O <strong>VitaVoz</strong> é uma camada de inteligência preditiva que transforma áudios e relatos do WhatsApp em dados clínicos estruturados. Identificamos complicações no momento exato em que a curva muda — <span class="text-teal-300 font-medium">antes da ligação, antes da complicação, antes do pronto-socorro.</span>
+                </p>
+            </section>
+
+            <!-- O PROBLEMA DA CLÍNICA -->
+            <section>
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="alert-triangle" class="w-5 h-5 text-rose-400"></i>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">O Problema da Clínica</h2>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Cards de Problema -->
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition">
+                        <div class="p-2 bg-rose-500/10 text-rose-400 rounded-lg w-fit mb-3">
+                            <i data-lucide="message-square-off" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-semibold text-white mb-1.5 text-sm">O "Segundo Consultório" Caótico</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Dezenas de áudios e mensagens de WhatsApp recebidas diariamente entre os horários de cirurgia.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition">
+                        <div class="p-2 bg-amber-500/10 text-amber-400 rounded-lg w-fit mb-3">
+                            <i data-lucide="clock" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-semibold text-white mb-1.5 text-sm">Perda de Tempo Clínico</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Mais de 2 horas por dia gastas lendo relatos repetitivos ou tentando lembrar o histórico do paciente.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900/80 border border-slate-800 rounded-xl p-5 hover:border-slate-700 transition">
+                        <div class="p-2 bg-indigo-500/10 text-indigo-400 rounded-lg w-fit mb-3">
+                            <i data-lucide="shield-alert" class="w-5 h-5"></i>
+                        </div>
+                        <h3 class="font-semibold text-white mb-1.5 text-sm">Risco de Marca & Complicação Tardia</h3>
+                        <p class="text-xs text-slate-400 leading-relaxed">
+                            Pacientes que pioram em silêncio no D+3 e buscam o pronto-socorro sem o aval do seu cirurgião.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- A SOLUÇÃO VITAVOZ & FLUXO -->
+            <section class="bg-slate-900/60 border border-slate-800 rounded-2xl p-6">
+                <div class="flex items-center gap-2 mb-6">
+                    <i data-lucide="shield-check" class="w-5 h-5 text-teal-400"></i>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">A Solução VitaVoz</h2>
+                </div>
+
+                <!-- FLUXOGRAMA -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6 relative">
+                    <div class="bg-slate-900 border border-teal-500/30 rounded-xl p-4 text-center relative">
+                        <div class="text-xs font-bold text-teal-400 uppercase tracking-widest mb-1">Passo 1</div>
+                        <div class="font-bold text-white text-base mb-1">1. ESCUTA ATIVA</div>
+                        <div class="text-xs text-slate-400">Relato em voz natural sem necessidade de baixar apps</div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-teal-500/30 rounded-xl p-4 text-center relative">
+                        <div class="text-xs font-bold text-teal-400 uppercase tracking-widest mb-1">Passo 2</div>
+                        <div class="font-bold text-white text-base mb-1">2. MOTOR DE IA</div>
+                        <div class="text-xs text-slate-400">Cruzamento contínuo com Protocolos de IA Clínicos</div>
+                    </div>
+
+                    <div class="bg-slate-900 border border-teal-500/30 rounded-xl p-4 text-center relative">
+                        <div class="text-xs font-bold text-teal-400 uppercase tracking-widest mb-1">Passo 3</div>
+                        <div class="font-bold text-white text-base mb-1">3. FILA DE AÇÃO</div>
+                        <div class="text-xs text-slate-400">Triagem passiva automática e atenção 100% focada</div>
+                    </div>
+                </div>
+
+                <!-- DETALHES DAS TRES ETAPAS -->
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 pt-2 border-t border-slate-800/80">
+                    <div>
+                        <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-1">Paciente Cuidado</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            O paciente acessa um link simples, registra o nível de dor na escala visual humanizada (OMS) e envia um relato de voz natural.
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-1">Motor de Protocolos Clínicos</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            A IA transcreve o relato e cruza sintomas com curvas de recuperação esperadas (<span class="text-slate-100 font-medium">Implante v1.4, Enxerto v1.1, Ortognática v3.0</span>).
+                        </p>
+                    </div>
+
+                    <div>
+                        <h4 class="text-xs font-bold text-teal-300 uppercase tracking-wider mb-1">Cockpit do Cirurgião</h4>
+                        <p class="text-xs text-slate-300 leading-relaxed">
+                            A clínica não precisa checar 42 conversas. O sistema filtra 41 pacientes estáveis em segundo plano e destaca no topo apenas o paciente crítico.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ESTUDO DE CASO: O CASO JOÃO SILVA -->
+            <section>
+                <div class="flex items-center justify-between mb-4">
+                    <div class="flex items-center gap-2">
+                        <i data-lucide="file-text" class="w-5 h-5 text-amber-400"></i>
+                        <h2 class="text-lg font-bold text-white uppercase tracking-wider">Estudo de Caso Prático</h2>
+                    </div>
+                    <span class="text-xs text-slate-400 font-mono">ID: #JS-20260723</span>
+                </div>
+
+                <!-- SIMULADOR COCKPIT COCKPIT COCKPIT -->
+                <div class="bg-slate-900 border border-amber-500/40 rounded-2xl p-5 sm:p-6 shadow-xl relative overflow-hidden">
+                    <div class="flex flex-col md:flex-row justify-between items-start md:items-center gap-3 pb-4 border-b border-slate-800">
+                        <div class="flex items-center gap-3">
+                            <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-amber-500/10 text-amber-400 border border-amber-500/30 text-xs font-bold">
+                                <i data-lucide="alert-circle" class="w-3.5 h-3.5"></i>
+                                ALERTA DE ATENÇÃO: D+3 (23/07)
+                            </span>
+                            <h3 class="text-base font-bold text-white">Paciente: João Silva</h3>
+                        </div>
+                        <span class="text-xs text-slate-400">Procedimento: Implante Dentário Unitário (Realizado em 20/07/2026)</span>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 pt-4">
+                        <!-- Lado Esquerdo: Diagnostico & IA -->
+                        <div class="space-y-3">
+                            <div>
+                                <span class="text-[11px] font-semibold uppercase text-slate-400 block mb-1">Anamnese em Destaque:</span>
+                                <div class="flex flex-wrap gap-2">
+                                    <span class="text-xs bg-rose-950/80 text-rose-300 border border-rose-800/50 px-2.5 py-0.5 rounded font-medium">
+                                        ⚠️ Alergia a Amoxicilina
+                                    </span>
+                                    <span class="text-xs bg-indigo-950/80 text-indigo-300 border border-indigo-800/50 px-2.5 py-0.5 rounded font-medium">
+                                        🧠 Ansiedade Elevada
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div>
+                                <span class="text-[11px] font-semibold uppercase text-slate-400 block mb-1">Análise do Motor de IA:</span>
+                                <div class="bg-slate-950/80 border border-slate-800 rounded-lg p-3 text-xs text-amber-200/90 leading-normal">
+                                    <strong>Desvio detectado:</strong> Reversão da tendência de melhora esperada para D+3. 
+                                    <div class="mt-1 flex items-center gap-2 font-mono text-white text-xs">
+                                        <span>Dor D+2: 2/10</span>
+                                        <i data-lucide="arrow-right" class="w-3 h-3 text-amber-400"></i>
+                                        <span class="text-rose-400 font-bold">Dor D+3: 4/10 + Relato de Edema Local</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Lado Direito: Acao & Resultado -->
+                        <div class="space-y-3 bg-slate-950/50 p-4 rounded-xl border border-slate-800/80">
+                            <div>
+                                <span class="text-[11px] font-semibold uppercase text-teal-400 block mb-1">Ação da Plataforma:</span>
+                                <p class="text-xs text-slate-200">
+                                    Orientação antecipada enviada em <strong>18 segundos</strong> com ajuste de medicação analgésica conforme protocolo cadastrado da clínica.
+                                </p>
+                            </div>
+
+                            <div class="pt-2 border-t border-slate-800">
+                                <span class="text-[11px] font-semibold uppercase text-emerald-400 block mb-1">Resultado Clínico:</span>
+                                <p class="text-xs text-emerald-200 font-medium">
+                                    ✅ Complicação evitada com <strong>8 dias de antecedência</strong> do retorno presencial agendado.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- IMPACTO OPERACIONAL E ROI -->
+            <section>
+                <div class="flex items-center gap-2 mb-4">
+                    <i data-lucide="trending-up" class="w-5 h-5 text-emerald-400"></i>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Impacto Operacional & ROI</h2>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <!-- Métricas -->
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                        <div class="text-2xl font-extrabold text-teal-400 mb-1">2h 22m</div>
+                        <div class="text-xs font-semibold text-white mb-1">Redução de Tempo Clínico</div>
+                        <p class="text-xs text-slate-400">
+                            De 2h40m diárias de digitação/áudios para apenas 18 minutos focados exclusivamente nas exceções.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                        <div class="p-2 bg-teal-500/10 text-teal-400 rounded-lg w-fit mb-2">
+                            <i data-lucide="scale" class="w-5 h-5"></i>
+                        </div>
+                        <div class="text-xs font-semibold text-white mb-1">Proteção Jurídica</div>
+                        <p class="text-xs text-slate-400">
+                            Histórico estruturado e temporal de acompanhamento e anamnese visível no topo do prontuário.
+                        </p>
+                    </div>
+
+                    <div class="bg-slate-900 border border-slate-800 rounded-xl p-5">
+                        <div class="p-2 bg-emerald-500/10 text-emerald-400 rounded-lg w-fit mb-2">
+                            <i data-lucide="heart" class="w-5 h-5"></i>
+                        </div>
+                        <div class="text-xs font-semibold text-white mb-1">Fidelização do Paciente</div>
+                        <p class="text-xs text-slate-400">
+                            Barra de evolução visual ("70% de progresso") que reduz drasticamente a ansiedade do pós-operatório.
+                        </p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PROGRAMA FUNDADORES -->
+            <section class="bg-gradient-to-r from-teal-950 via-slate-900 to-slate-900 border border-teal-500/40 rounded-2xl p-6 sm:p-7 relative">
+                <div class="flex items-center gap-2 mb-3">
+                    <i data-lucide="award" class="w-6 h-6 text-teal-400"></i>
+                    <h2 class="text-lg font-bold text-white uppercase tracking-wider">Oportunidade: Programa Fundadores</h2>
+                </div>
+                <p class="text-xs sm:text-sm text-slate-300 mb-4">
+                    Buscamos clínicas odontológicas de referência para formar nosso primeiro grupo de parceiros estratégicos:
+                </p>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <div class="text-teal-400 font-bold text-sm mb-1">🎁 60 Dias Gratuitos</div>
+                        <p class="text-xs text-slate-400">Implantação e parametrização sem qualquer custo inicial.</p>
+                    </div>
+
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <div class="text-teal-400 font-bold text-sm mb-1">⚙️ Sob Medida</div>
+                        <p class="text-xs text-slate-400">Alinhamos os protocolos da IA às condutas específicas da sua clínica.</p>
+                    </div>
+
+                    <div class="bg-slate-950/60 border border-slate-800 rounded-xl p-4">
+                        <div class="text-teal-400 font-bold text-sm mb-1">💎 Condição Vitalícia</div>
+                        <p class="text-xs text-slate-400">50% de desconto garantido no Plano Starter pós-piloto.</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- DEMONSTRAÇÃO INTERATIVA / CONTATO -->
+            <footer class="bg-slate-900 border border-slate-800 rounded-2xl p-6">
+                <div class="flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="space-y-2 text-center md:text-left">
+                        <span class="text-xs font-bold text-teal-400 uppercase tracking-widest block">Demonstração Interativa ao Vivo</span>
+                        <h3 class="text-xl font-bold text-white">Experimente a plataforma no seu celular agora mesmo</h3>
+                        <p class="text-xs text-slate-400 max-w-md">
+                            Aponte a câmera para o QR Code ou entre em contato com nossa equipe técnica para solicitar acesso.
+                        </p>
+                        
+                        <div class="pt-3 flex flex-wrap gap-4 text-xs font-mono text-slate-300 justify-center md:justify-start">
+                            <span class="flex items-center gap-1.5"><i data-lucide="globe" class="w-4 h-4 text-teal-400"></i> vitavoz.app</span>
+                            <span class="flex items-center gap-1.5"><i data-lucide="mail" class="w-4 h-4 text-teal-400"></i> contato@vitavoz.app</span>
+                            <span class="flex items-center gap-1.5"><i data-lucide="phone" class="w-4 h-4 text-teal-400"></i> WhatsApp: (XX) 9XXXX-XXXX</span>
+                        </div>
+                    </div>
+
+                    <!-- Mockup QR Code -->
+                    <div class="flex flex-col items-center justify-center p-3 bg-white rounded-xl shadow-lg shrink-0 w-36 h-36">
+                        <!-- SVG QR Code Icon Mock -->
+                        <svg class="w-28 h-28 text-slate-900" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                            <path d="M3 3h6v6H3zM15 3h6v6h-6zM3 15h6v6H3zM10 3h1v1h-1zM10 6h1v1h-1zM13 3h1v1h-1zM10 10h1v1h-1zM12 10h1v1h-1zM10 12h1v1h-1zM13 13h1v1h-1zM15 10h2v2h-2zM15 15h1v1h-1zM18 13h3v1h-3zM18 15h1v3h-1zM20 18h1v3h-1zM15 19h2v2h-2z" />
+                        </svg>
+                        <span class="text-[9px] font-bold text-slate-700 tracking-wider uppercase mt-1">Escaneie para testar</span>
+                    </div>
+                </div>
+            </footer>
+
+        </div>
+    </main>
+
+    <script>
+        // Initialize Lucide icons
+        lucide.createIcons();
+    </script>
+</body>
+</html>
